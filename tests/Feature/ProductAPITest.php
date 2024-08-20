@@ -126,7 +126,7 @@ class ProductAPITest extends TestCase
 
 
     /**
-     * Test showing created product
+     * Test showing available product item. 
      */
     public function test_show_product_success()
     {
