@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +17,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Reset cached roles and permissions
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+
+        //Creating two user roles as admin and client.
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'client']);
+
+        // create default admin use with a role called "admin".
+        $admin = User::create([
+            'name' => "admin user",
+            'email' => "admin@mail.com",
+            'email_verified_at' => now(),
+            'password' => Hash::make('password')
         ]);
+
+        $admin->assignRole('admin');
+
     }
 }

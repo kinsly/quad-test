@@ -2,3 +2,17 @@ For API I am using Laravel's built-in cookie based session authentication servic
 
 Accept: application/json header and either the Referer or Origin header with your request.
 
+1. To authenticate first make a request to the /sanctum/csrf-cookie endpoint to initialize CSRF protection for the application
+2. 
+
+
+Postman configurations
+1. Make request to 
+2. Create post response script for that request
+// Get the XSRF-TOKEN cookie
+var xsrfCookie = pm.cookies.get('XSRF-TOKEN');
+
+// Set Collection Varilable XSRF-TOKEN to access all other request
+pm.collectionVariables.set('XSRF-TOKEN', xsrfCookie);
+
+3. Create collection variable called XSRF-TOKEN. set any intial value. Then set empty for current value.
