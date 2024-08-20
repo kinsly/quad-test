@@ -78,9 +78,9 @@ class ProductAPITest extends TestCase
 
 
     /**
-     *  Test - listing all available products
+     *  Test - listing all available products - Admins
      */
-    public function test_showing_all_products()
+    public function test_showing_all_products_by_admins()
     {
         // Create a user and assign a role
         $user = User::factory()->create();
@@ -124,6 +124,53 @@ class ProductAPITest extends TestCase
         ]);
     }
 
+
+    /**
+     *  Test - listing all available products - Clients
+     */
+    public function test_showing_all_products_by_clients()
+    {
+        // Create a user and assign a role
+        $user = User::factory()->create();
+        $user->assignRole('client');
+
+        // Create some products
+        $products = Product::factory()->count(3)->create();
+        $this->actingAs($user);
+        // Loop through each product and make a POST request to create it
+        foreach ($products as $product) {
+            $productData = [
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+            ];
+            $this->postJson('/api/products', $productData);
+        }
+
+        // Make a GET request to the index method
+        $response = $this->getJson('/api/products');
+
+        // Assert the response status and structure
+        $response->assertStatus(200);
+        $response->assertJsonCount(3);
+        $response->assertJsonStructure([
+            '*' => ['id', 'name', 'description', 'price', 'created_at', 'updated_at']
+        ]);
+
+        // Assert the products are returned in the response
+        $response->assertJsonFragment([
+            'id' => $products[0]->id,
+            'name' => $products[0]->name,
+        ]);
+        $response->assertJsonFragment([
+            'id' => $products[1]->id,
+            'name' => $products[1]->name,
+        ]);
+        $response->assertJsonFragment([
+            'id' => $products[2]->id,
+            'name' => $products[2]->name,
+        ]);
+    }
 
     /**
      * Test showing available product item. 
