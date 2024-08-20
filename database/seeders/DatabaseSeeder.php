@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-
         //Creating two user roles as admin and client.
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'client']);

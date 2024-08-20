@@ -32,6 +32,12 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->string('password')),
         ]);
 
+        /**
+         * Add client role for all new users.
+         * Admin registration is ommited since there is no need for this test
+         */
+        $user->assignRole('client');
+
         event(new Registered($user));
 
         Auth::login($user);
