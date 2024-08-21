@@ -50,6 +50,13 @@ We can use caching backends like Memcached, Redis, DynamoDB to reduce database l
     ],
 ],
 ```
+
+** Optimizing database queries for performance - Indexing
+
+Used laravel indexing feature for products table. Add unique index for "name" column to improve product searches. Check database/migrations/2024_08_21_111437_update_products_table_indexes file.
+
+Please note: Product search api is not implements as it is not necessary. 
+
 Check ProductsController.php file for caching example used. 
 1. All products data is prementantly cached.
 2. Invalidate cache whenever admin create, update or delete products.
