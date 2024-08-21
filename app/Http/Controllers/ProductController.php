@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        // Define a cache key
+        $cacheKey = 'products.all';
+
+        // Remembering all products on cache forever. 
+        // Cache will be invalidated when new product is added or updated.
+        $products = Cache::rememberForever($cacheKey, function () {
+            return $products = Product::all();
+        });
+
         return $products;
     }
 
@@ -29,6 +38,10 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $product = Product::create($validated);
+
+        // Invalidate the cache
+        Cache::forget('products.all');
+        
         return $product;
     }
 
@@ -70,6 +83,9 @@ class ProductController extends Controller
         // Update the product with the validated data
         $product->update($validated);
 
+        // Invalidate the cache
+        Cache::forget('products.all');
+
         return $product;
     }
 
@@ -89,6 +105,9 @@ class ProductController extends Controller
         }
 
         $product->delete();
+        
+        // Invalidate the cache
+        Cache::forget('products.all');
         return response()->json(null,204);
     }
 }

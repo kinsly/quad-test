@@ -35,5 +35,24 @@ Should enable the withCredentials and withXSRFToken options on application's glo
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
+** Caching
+We can use caching backends like Memcached, Redis, DynamoDB to reduce database load and to improve API response time. Here we are usig  Memcached PECL package. set following configuration config/cache.php. If not leave as it is to use laravel default caching mechanism. 
+``` 
+'memcached' => [
+    // ...
+ 
+    'servers' => [
+        [
+            'host' => env('MEMCACHED_HOST', '127.0.0.1'),
+            'port' => env('MEMCACHED_PORT', 11211),
+            'weight' => 100,
+        ],
+    ],
+],
+```
+Check ProductsController.php file for caching example used. 
+1. All products data is prementantly cached.
+2. Invalidate cache whenever admin create, update or delete products.
+
 Postman configurations
 1. check documentation at documenation folder.
