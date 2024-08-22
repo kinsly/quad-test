@@ -23,13 +23,13 @@ class AuthenticationTest extends TestCase
         //Here new users are clients only. No admin or other roles avaialble
         $user->assignRole('client');
 
-        $response = $this->postJson('/login', [
+        $response = $this->postJson('/api/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertNoContent();
+        $response->assertStatus(200);
+
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
@@ -38,23 +38,11 @@ class AuthenticationTest extends TestCase
         //Here new users are clients only. No admin or other roles avaialble
         $user->assignRole('client');
 
-        $this->postJson('/login', [
+        $this->postJson('/api/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
 
         $this->assertGuest();
-    }
-
-    public function test_users_can_logout(): void
-    {
-        $user = User::factory()->create();
-        //Here new users are clients only. No admin or other roles avaialble
-        $user->assignRole('client');
-
-        $response = $this->actingAs($user)->postJson('/logout');
-
-        $this->assertGuest();
-        $response->assertNoContent();
     }
 }

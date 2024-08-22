@@ -1,5 +1,10 @@
 # Quard Intel Test
-1. Using API authentication with sanctum with session and XSRF TOKEN.
+Here I am using Sanctum tokens to authenticate requests to the API. Should pass the token in the Authorization header as a Bearer token.
+
+Check ```./Documentation``` folder for API documenation created with API including all postman requests.
+
+## Application
+1. Using API authentication with sanctum.
 2. Using user roles from spatie. Available roles are admin and client.
 3. Used database tables are users, products and orders for this test. (Check documentation folder in this repository for database diagram)
 4. Seeding admin user with admin privileges.
@@ -16,16 +21,22 @@ Clone repository
 ```
 Install packages
 ```bash
+cd quad-test
 composer install
 ```
 Configure .env file
 * Rename .env-example file to .env
 * Generate new app key
 ```bash
+mv .env.example .env
 php artisan key:generate
 ```
-* Add your mysql database credential to .env file.
-
+* Add your mysql database credential to .env file. (Leave as it is to create default SQLite database)
+* Make sure app urls are correct in .env file for sanctum to work correctly. For localhost:8000 use below configuration
+```
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3000
+```
 Create tables
 ```bash
 php artisan migrate
@@ -37,12 +48,18 @@ php artisan db:seed
 ```
 Initiate local server
 ```bash
-php artisan server
+php artisan serve
 ```
-
-## How to use
-with postman including importing postman files
-
+## How to use - Postman Setup
+* Download and install latest version of postman.
+[Download Postman](https://www.postman.com/downloads/)
+* Open recently installed postman app and select "import" button on the home screen.
+* Import below postman json file
+```./Documentation/Quad Intel Test.postman_collection.json```
+* Run ```Admin Login``` to login as a Admin
+* Go to ```Products - CRUD``` collection and run ```Create Product``` request to create a new product item.
+* Go to ```User-client``` collection and run ```Client Register``` 
+* Go to ```Orders - Client``` collection and run ```Place Order``` request to place new order to admin created product.
 
 ## Tests (PHP Unit Tests)
 1. Go to ./tests/Feature folder to view all available test files.
@@ -51,21 +68,6 @@ with postman including importing postman files
 4. Run below artisan command to run test.
 ```bash
 php artisan test
-```
-
-## About
-
-For API I am using Laravel's built-in cookie based session authentication services. This approach to authentication provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS. Every API request should need to have
-
-" Accept: application/json header, XSRF-TOKEN and Origin header."
-It is required to make a request to the /sanctum/csrf-cookie endpoint to initialize CSRF protection for the application
-
-### Axios Configuration
-Should enable the withCredentials and withXSRFToken options on application's global axios instance. 
-
-```javascript
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
 ```
 
 ### Caching
