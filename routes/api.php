@@ -9,7 +9,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::middleware(['auth:sanctum', 'role:admin'])->resource('products', ProductController::class);
 
 Route::middleware(['auth:sanctum', 'role:admin|client'])->get('/products', [ProductController::class, 'index']);
 Route::middleware(['auth:sanctum', 'role:admin'])->post('/products', [ProductController::class, 'store']);
