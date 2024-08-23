@@ -1,7 +1,10 @@
 # Quard Intel Test
 Here I am using Sanctum tokens to authenticate requests to the API. Should pass the token in the Authorization header as a Bearer token.
 
-Check ```./Documentation``` folder for API documenation created with API including all postman requests.
+Check ```./Documentation``` folder for 
+* API documenation created with API including all postman requests.
+* Postman collection json file
+* Database schema
 
 ## Application
 1. Using API authentication with sanctum.
@@ -56,7 +59,7 @@ php artisan serve
 * Open recently installed postman app and select "import" button on the home screen.
 * Import below postman json file
 ```./Documentation/Quad Intel Test.postman_collection.json```
-* Run ```Admin Login``` to login as a Admin
+* Run ``` Login``` to login as a Admin
 * Go to ```Products - CRUD``` collection and run ```Create Product``` request to create a new product item.
 * Go to ```User-client``` collection and run ```Client Register``` 
 * Go to ```Orders - Client``` collection and run ```Place Order``` request to place new order to admin created product.
@@ -95,11 +98,6 @@ Check ProductsController.php file for caching example used.
 
 Used laravel indexing feature for products table. Add unique index for "name" column of the products table to improve searching. Check
 
-```database/migrations/2024_08_21_111437_update_products_table_indexes```
+```./database/migrations/2024_08_21_111437_update_products_table_indexes```
 
-Please note: Product search api is not implements as it is not necessary. 
-
-
-
-Postman configurations
-1. check documentation at documenation folder.
+Please note: Product search api is not implemented in this example as it is not necessary. 
