@@ -2,7 +2,7 @@
 Here I am using Sanctum tokens to authenticate requests to the API. Should pass the token in the Authorization header as a Bearer token.
 
 Check ```./Documentation``` folder for 
-* API documenation created with API including all postman requests.
+* API documenation created with Postman. Click here for [Online API Documenation](https://documenter.getpostman.com/view/321583/2sAXjDfbRG)
 * Postman collection json file
 * Database schema
 
